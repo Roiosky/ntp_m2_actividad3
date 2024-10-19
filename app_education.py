@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 
 # Título de la aplicación
 st.title("Análisis de Datos de Educación en Colombia")
@@ -59,11 +58,7 @@ if uploaded_file is not None:
     # Mostrar el histograma de la distribución de la edad
     st.subheader("Distribución de la Edad")
     if not df_filtrado.empty:
-        plt.figure(figsize=(10, 6))
-        plt.hist(df_filtrado["Edad"], bins=10, edgecolor="black")
-        plt.xlabel("Edad")
-        plt.ylabel("Frecuencia")
-        st.pyplot(plt.gcf())  # Mostrar el histograma en Streamlit
+        st.bar_chart(df_filtrado["Edad"].value_counts(bins=10))
     else:
         st.write("No hay datos para mostrar el histograma.")
 else:
