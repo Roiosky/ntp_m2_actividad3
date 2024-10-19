@@ -1,20 +1,19 @@
 import streamlit as st
 import pandas as pd
 
-# Título de la aplicación
 st.title("Análisis de Datos de Educación en Colombia")
 
-# Subir el archivo CSV
+# linea que sube el archivo de datos
 uploaded_file = st.file_uploader("Sube un archivo CSV", type=["csv"])
 
 if uploaded_file is not None:
-    # Leer el archivo CSV en un DataFrame de Pandas
+    # funcion para leer el archivo y crer el fataframe
     df = pd.read_csv(uploaded_file)
 
-    # Mostrar la tabla completa de datos
+    # mostrar todos los datos
     st.dataframe(df)
 
-    # Crear los filtros en la barra lateral
+    # barra lateral para filtrar los elementos
     st.sidebar.header("Filtros")
 
     nivel_educativo = st.sidebar.multiselect(
@@ -29,7 +28,7 @@ if uploaded_file is not None:
         "Institución", df["Institución"].unique()
     )
 
-    # Filtrar los datos en base a los filtros seleccionados
+    # modulos para filtrar datos
     df_filtrado = df.copy()
 
     if nivel_educativo:
@@ -41,21 +40,21 @@ if uploaded_file is not None:
     if institucion:
         df_filtrado = df_filtrado[df_filtrado["Institución"].isin(institucion)]
 
-    # Mostrar el DataFrame filtrado
+    # mmostrar filtos
     st.dataframe(df_filtrado)
 
-    # Mostrar estadísticas descriptivas de los datos filtrados
+    #  datos filtrados
     st.subheader("Estadísticas Descriptivas")
     st.write(df_filtrado.describe())
 
-    # Mostrar el conteo de estudiantes por Nivel educativo
+    # conteo de estudiantes por Nivel educativo
     st.subheader("Conteo de Estudiantes por Nivel Educativo")
     if not df_filtrado.empty:
         st.bar_chart(df_filtrado["Nivel educativo"].value_counts())
     else:
         st.write("No hay datos disponibles para los filtros seleccionados.")
 
-    # Mostrar el histograma de la distribución de la edad
+    # distribución de la edad
     st.subheader("Distribución de la Edad")
     if not df_filtrado.empty:
         st.bar_chart(df_filtrado["Edad"].value_counts(bins=10))
